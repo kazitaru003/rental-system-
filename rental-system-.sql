@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2026 at 03:29 AM
+-- Generation Time: Apr 27, 2026 at 04:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -60,7 +60,7 @@ CREATE TABLE `renters` (
 CREATE TABLE `vehicles` (
   `licence_plate_number` int(11) NOT NULL,
   `vehicle_make` varchar(50) NOT NULL,
-  `vehcile_brand` varchar(50) NOT NULL,
+  `vehicle_brand` varchar(50) NOT NULL,
   `vehicle_class` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
