@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class ="navbar navbar-dark bg-dark">
+     <div class="container">
+      <a class="navbar-brand" href="index.html">Rental System</a>
+       <div>
+        <a href="vehicles.html" class="btn btn-outline-light btn-sm me-2 active">Vehicles</a>
+         <a href="rent.html" class="btn btn-outline-light btn-sm me-2 active">Rent</a>
+         <a href="logs.html" class="btn btn-outline-light btn-sm me-2 active">Logs</a>
+       </div>
+    </div>
+    </nav>
+
+    <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4>Make a rental</h4>
+        <button class="btn btn-success" onclick="showAvailableVehicles()">
+            View Available Vehicles
+        </button>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7">
+            <div class="card">
+            <div class="card-header bg-light">
+                <strong>Available Vehicles</strong>
+                </div>
+                <div class="card-body">
+                <div class="row g-3" id="availableVehiclesContainer">
+                <div class="col-12 text-center text-muted py-4">
+                    Loading Available Vehicles....
+                </div>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="card">
+             <div class="card-header bg-light">
+                <strong>Rental Details</strong>
+        </div>
+        <div class="card-body p-4">
+        <form id="rentalForm">
+            <div class="mb-4">
+           <label class="form-label">Selected Vehicle</label>
+           <input type="text" class="form-control" id="selectedVehicle" readonly placeholder="No vehicles selected">
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+             <label class="form-label">Renter Name</label>
+             <input type="text" class="form-control" id="renterName" required>
+            </div>
+            <div class="row">
+            <div class="col-md-6 mb-4">
+             <label class="form-label">Contact Number</label>
+             <input type="text" class="form-control" id="contactNum" required>
+            </div>
+            <div class="row">
+            <div class="col-md-6 mb-4">
+             <label class="form-label">Rental Start Date</label>
+             <input type="text" class="form-control" id="rentStart" required>
+            </div>
+            <div class="row">
+            <div class="col-md-6 mb-4">
+             <label class="form-label">Rental End Date</label>
+             <input type="text" class="form-control" id="rentEnd" required>
+            </div>
+            </div>
+
+            <div class="mb-4">
+             <label class="form-label">Total Amount</label>
+             <input type="text" class="form-control" id="totalAmount" readonly>
+            </div>
+          
+             <div class="pt-3">
+            <button type="button" class="btn btn-primary w-100" onclick="processRental()">
+                Confirm Rental
+            </button>
+
+        </form>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderRentPage(); 
+        });
+    </script>
+</body>
+</html>
