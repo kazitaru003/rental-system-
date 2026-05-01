@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2026 at 03:01 AM
+-- Generation Time: May 01, 2026 at 03:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `history` (
   `rental_no` int(11) NOT NULL,
   `renter_id` int(11) NOT NULL,
-  `licence_plate_number` int(11) NOT NULL,
+  `licence_plate_number` varchar(6) NOT NULL,
   `days_rented` int(11) NOT NULL,
   `rental_start` date NOT NULL,
   `rental_end` date NOT NULL,
@@ -58,10 +58,13 @@ CREATE TABLE `renters` (
 --
 
 CREATE TABLE `vehicles` (
-  `licence_plate_number` varchar(11) NOT NULL,
+  `licence_plate_number` varchar(6) NOT NULL,
+  `daily_rate` int(11) NOT NULL,
   `vehicle_make` varchar(50) NOT NULL,
   `vehicle_brand` varchar(50) NOT NULL,
-  `vehicle_class` varchar(20) NOT NULL
+  `vehicle_class` varchar(20) NOT NULL,
+  `vehicle_type` varchar(20) NOT NULL,
+  `vehicle_year` int(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
