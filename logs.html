@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class ="navbar navbar-dark bg-dark">
+     <div class="container">
+      <a class="navbar-brand" href="index.html">Rental System</a>
+       <div>
+        <a href="vehicles.html" class="btn btn-outline-light btn-sm me-2 active">Vehicles</a>
+         <a href="rent.html" class="btn btn-outline-light btn-sm me-2 active">Rent</a>
+         <a href="logs.html" class="btn btn-outline-light btn-sm me-2 active">Logs</a>
+       </div>
+    </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4>Rental & Activity Logs</h4>
+            <button class="btn btn-primary" onclick="clearLogs()">
+                Clear Logs
+            </button>
+            </div>
+    <div class="card">
+        <div class="card-body p4">
+            <div class="card-body p4">
+                <table class="table table-hover align-middle" id="logsTable">
+                    <thead class="table-dark">
+                        <tr>
+                         <th>Date & Time</th>
+                         <th>Vehicle</th>
+                         <th>Plate Number</th>
+                         <th>Renter</th>
+                         <th>Action</th>
+                         <th>Status</th>
+                        </tr>
+                        </thead>
+                        <tbody id="logsbody">
+                            <tr>
+                            <td colspsan="6" class="text-center text-muted py-4">
+                                loading logs....
+                            </td>
+                            </tr>
+                        </tbody>
+                </table>
+                </div>
+        </div>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/app.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            renderLogs();
+        });
+    </script>
+</body>
+</html>
