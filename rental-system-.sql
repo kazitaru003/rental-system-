@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 01, 2026 at 03:21 AM
+-- Generation Time: May 02, 2026 at 04:21 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,20 +40,6 @@ CREATE TABLE `history` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `renters`
---
-
-CREATE TABLE `renters` (
-  `renter_id` int(11) NOT NULL,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `contact_no` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `vehicles`
 --
 
@@ -62,10 +48,17 @@ CREATE TABLE `vehicles` (
   `daily_rate` int(11) NOT NULL,
   `vehicle_make` varchar(50) NOT NULL,
   `vehicle_brand` varchar(50) NOT NULL,
-  `vehicle_class` varchar(20) NOT NULL,
   `vehicle_type` varchar(20) NOT NULL,
-  `vehicle_year` int(4) NOT NULL
+  `vehicle_year` int(4) NOT NULL,
+  `vehicle_status` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vehicles`
+--
+
+INSERT INTO `vehicles` (`licence_plate_number`, `daily_rate`, `vehicle_make`, `vehicle_brand`, `vehicle_type`, `vehicle_year`, `vehicle_status`) VALUES
+('ABC123', 1000, 'Corolla', 'Toyota', 'Car', 2002, 'Available');
 
 --
 -- Indexes for dumped tables
@@ -76,12 +69,6 @@ CREATE TABLE `vehicles` (
 --
 ALTER TABLE `history`
   ADD PRIMARY KEY (`rental_no`);
-
---
--- Indexes for table `renters`
---
-ALTER TABLE `renters`
-  ADD PRIMARY KEY (`renter_id`);
 
 --
 -- Indexes for table `vehicles`
@@ -98,12 +85,6 @@ ALTER TABLE `vehicles`
 --
 ALTER TABLE `history`
   MODIFY `rental_no` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `renters`
---
-ALTER TABLE `renters`
-  MODIFY `renter_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
