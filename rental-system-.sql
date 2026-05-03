@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 02, 2026 at 04:21 AM
+-- Generation Time: May 03, 2026 at 02:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,13 +29,21 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `history` (
   `rental_no` int(11) NOT NULL,
-  `renter_id` int(11) NOT NULL,
+  `renter_name` varchar(100) NOT NULL,
+  `renter_contact` int(11) NOT NULL,
   `licence_plate_number` varchar(6) NOT NULL,
   `days_rented` int(11) NOT NULL,
   `rental_start` date NOT NULL,
   `rental_end` date NOT NULL,
   `rental_status` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `history`
+--
+
+INSERT INTO `history` (`rental_no`, `renter_name`, `renter_contact`, `licence_plate_number`, `days_rented`, `rental_start`, `rental_end`, `rental_status`) VALUES
+(2, 'asdfRenter5', 2147483647, 'GHI789', 7, '2026-05-03', '2026-05-10', 'Active');
 
 -- --------------------------------------------------------
 
@@ -58,7 +66,9 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`licence_plate_number`, `daily_rate`, `vehicle_make`, `vehicle_brand`, `vehicle_type`, `vehicle_year`, `vehicle_status`) VALUES
-('ABC123', 1000, 'Corolla', 'Toyota', 'Car', 2002, 'Available');
+('ABC123', 1000, 'Corolla', 'Toyota', 'Car', 2002, 'Available'),
+('DEF456', 1500, 'Taurus', 'Ford', 'Truck', 2026, 'Maintenance'),
+('GHI789', 1250, 'Montero Sport', 'Mitsubishi', 'Car', 2018, 'Rented');
 
 --
 -- Indexes for dumped tables
@@ -84,7 +94,7 @@ ALTER TABLE `vehicles`
 -- AUTO_INCREMENT for table `history`
 --
 ALTER TABLE `history`
-  MODIFY `rental_no` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `rental_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

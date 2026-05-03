@@ -35,6 +35,22 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     exit;
 }
+
+if ($action === 'edit' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Content-Type: application/json');
+    $plate = $conn->real_escape_string($_POST['licence_plate_number'] ?? '');
+    $daily_rate = intval($_POST['daily_rate'] ?? 0);
+    $vehicle_status = $conn->real_escape_string($_POST['vehicle_status'] ?? '');
+    
+    $sql = "UPDATE vehicles SET daily_rate = $daily_rate, vehicle_status = '$vehicle_status' WHERE licence_plate_number = '$plate'";
+    
+    if ($conn->query($sql)) {
+        echo json_encode(['success' => true, 'message' => 'Vehicle updated successfully']);
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Error: ' . $conn->error]);
+    }
+    exit;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -43,16 +59,15 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vehicles</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <nav class ="navbar navbar-dark bg-dark">
      <div class="container">
-      <a class="navbar-brand" href="index.html">Rental System</a>
+      <a class="navbar-brand" href="index.php">RentEase</a>
        <div>
-        <a href="vehicles.html" class="btn btn-outline-light btn-sm me-2 active">Vehicles</a>
-         <a href="rent.html" class="btn btn-outline-light btn-sm me-2 active">Rent</a>
-         <a href="logs.html" class="btn btn-outline-light btn-sm me-2 active">Logs</a>
+        <a href="vehicles.php" class="btn btn-outline-light btn-sm me-2 active">Vehicles</a>
+         <a href="rent.php" class="btn btn-outline-light btn-sm me-2 active">Rent</a>
+         <a href="logs.php" class="btn btn-outline-light btn-sm me-2 active">Logs</a>
        </div>
     </div>
     </nav>
@@ -123,6 +138,7 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
  </div>
     </form>
+</div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-success" onclick="addNewVehicle()">Save Vehicle</button>
@@ -130,8 +146,40 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
     </div>
     </div>
+
+    <div class="modal fade" id="editVehicleModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit Vehicle</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+     <form id="editVehicleForm">
+       <input type="hidden" id="edit_licence_plate_number" name="licence_plate_number">
+       <div class="mb-3">
+        <label class="form-label">Daily Rate</label>
+        <input type="number" class="form-control" id="edit_daily_rate" name="daily_rate" required>
+       </div>
+       <div class="mb-3">
+        <label class="form-label">Vehicle Status</label>
+        <select class="form-select" id="edit_vehicle_status" name="vehicle_status" required>
+            <option value="">Select Status</option>
+            <option value="Available">Available</option>
+            <option value="Rented">Rented</option>
+            <option value="Maintenance">Maintenance</option>
+        </select>
+       </div>
+     </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" onclick="saveEditVehicle()">Save Changes</button>
+    </div>
+    </div>
+    </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="js/app.js"></script>
     <script>
         function renderVehicles() {
             fetch('vehicles.php?action=fetch')
@@ -154,12 +202,67 @@ if ($action === 'add' && $_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <strong>Daily Rate:</strong> $${v.daily_rate}<br>
                                         <strong>Status:</strong> ${v.vehicle_status}
                                     </p>
+                                    <button class="btn btn-sm btn-warning edit-btn" data-plate="${v.licence_plate_number}" data-rate="${v.daily_rate}" data-status="${v.vehicle_status}">Edit</button>
                                 </div>
                             </div>
                         </div>
                     `).join('');
+                    
+                    // Add event listeners to edit buttons
+                    document.querySelectorAll('.edit-btn').forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const plate = this.getAttribute('data-plate');
+                            const rate = this.getAttribute('data-rate');
+                            const status = this.getAttribute('data-status');
+                            openEditModal(plate, rate, status);
+                        });
+                    });
                 })
                 .catch(error => console.error('Error loading vehicles:', error));
+        }
+
+        function openEditModal(plate, dailyRate, status) {
+            try {
+                document.getElementById('edit_licence_plate_number').value = plate;
+                document.getElementById('edit_daily_rate').value = dailyRate;
+                document.getElementById('edit_vehicle_status').value = status;
+                
+                const modalElement = document.getElementById('editVehicleModal');
+                if (!modalElement) {
+                    console.error('Modal element not found');
+                    return;
+                }
+                
+                const modal = new bootstrap.Modal(modalElement, {
+                    backdrop: true,
+                    keyboard: true
+                });
+                modal.show();
+            } catch (error) {
+                console.error('Error opening modal:', error);
+            }
+        }
+
+        function saveEditVehicle() {
+            const form = document.getElementById('editVehicleForm');
+            const formData = new FormData(form);
+            
+            fetch('vehicles.php?action=edit', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Vehicle updated successfully!');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('editVehicleModal'));
+                    modal.hide();
+                    renderVehicles();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => console.error('Error updating vehicle:', error));
         }
 
         function addNewVehicle() {
